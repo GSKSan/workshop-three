@@ -6,19 +6,21 @@ export class AppProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            jobs:[]
+            jobs: []
         }
     }
 
-    updateJobs=(jobs)=>{
+    updateJobs = (jobs) => {
+        console.log(jobs);
         this.setState({
-            jobs:jobs
+            jobs: jobs
         })
+        
     }
 
     render() {
         return (
-            <AppContext.Provider value={{name: this.state.name}}>
+            <AppContext.Provider value={{jobs: this.state.jobs, updateJobs: this.updateJobs}}>
                 {this.props.children}
             </AppContext.Provider>
         )
