@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { MapView } from "expo";
-import axios from 'axios';
-import { Button } from 'react-native-elements';
+import { Button } from "react-native-elements";
+import axios from "axios";
 
 const initialRegion = {
     longitude: -122,
@@ -25,18 +25,25 @@ export class MapScreen extends React.Component {
         })
     }
 
-    fetchJobs = async () =>{
-            const latitude = this.state.latitude;
-            const longitude = this.state.longitude;
-            const response = await axios.get(`https://jobs.github.com/positions.json?lat=${latitude}&long=${longitude}`);
-            console.log(response)
+    fetchJobs = async () => {
+        const latitude = this.state.region.latitude;
+        const longitude = this.state.region.longitude;
+
+        try {
+            const response = await axios.get(`https://jobs.github.com/positions.json?lat=${latitude}&long=${longitude}`)
+            const jobs = response.data.slice(0, 10);
+            return jobs;
+        } catch (err) {
+            console.log(err);
+        }
     }
+
 
     render() {
         return (
             <View style={{flex: 1}}>
                 <MapView region={this.state.region} style={{flex: 1}} onRegionChangeComplete={this.onRegionChangeComplete}/>
-                <Button title="fetch" onPress={this.fetchJobs}/>
+                <Button title="Fetch Jobs!" onPress={this.fetchJobs} />
             </View>
         )
     }
